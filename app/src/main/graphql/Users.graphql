@@ -1,0 +1,46 @@
+query GetUser($userId: Float!) {
+    users(userId: $userId) {
+         id
+        firstName
+        lastName
+        phone
+        address
+        email
+        password
+    }
+}
+
+mutation UserCreate($create: UserInput!) {
+    userCreate(create: $create) {
+        id
+    }
+}
+mutation UserLogin($validationUser: UserLoginInput!) {
+    userValidate(validationUser: $validationUser) {
+        id
+    }
+}
+
+mutation UserUpdate($update: UserInput!) {
+    userUpdate(update: $update) {
+        id
+    }
+}
+mutation UpdateAdmin($updateAdmin: UserUpdateAdmin!) {
+    userAdmin(updateAdmin: $updateAdmin) {
+        id
+    }
+}
+
+query GetUserAll {
+    usersAll {
+        id
+        firstName
+        lastName
+        address
+        phone
+        email
+        password
+
+    }
+}

@@ -1,0 +1,7 @@
+query GetAllAuthor {
+    getAllAuthor {
+        id
+        name
+        nationality
+    }
+}

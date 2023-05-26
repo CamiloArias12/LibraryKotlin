@@ -1,0 +1,9 @@
+query GetAllBook {
+    getAllBook {
+        id
+        title
+        publisher
+        area
+        summary
+    }
+}
