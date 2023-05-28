@@ -41,6 +41,7 @@ import com.apollographql.apollo3.api.ApolloResponse
 import com.example.librariproject.GetUserAllQuery
 import com.example.librariproject.R
 import com.example.librariproject.apollo.apolloClient
+import com.example.librariproject.routes.UserCrud
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Edit
@@ -58,8 +59,7 @@ fun UsersLibrary(navController: NavHostController) {
         var response: ApolloResponse<GetUserAllQuery.Data>? by remember {
             mutableStateOf(null)
         }
-        var listUser by remember {
-            mutableStateOf(emptyList<GetUserAllQuery.UsersAll>())
+        var listUser by remember { mutableStateOf(emptyList<GetUserAllQuery.UsersAll>())
         }
         LaunchedEffect(Unit) {
             response = apolloClient.query(GetUserAllQuery()).execute()
@@ -115,7 +115,9 @@ fun ListItemView(user: GetUserAllQuery.UsersAll, navController: NavHostControlle
                     textAlign = TextAlign.Start,
                 )
             }
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                navController.navigate(UserCrud.UpdateAdmin.route+ "/${user.id.toInt()}")
+            }) {
                 Icon(imageVector = FontAwesomeIcons.Solid.Edit, contentDescription = null, modifier = Modifier.size(20.dp))
             }
         }

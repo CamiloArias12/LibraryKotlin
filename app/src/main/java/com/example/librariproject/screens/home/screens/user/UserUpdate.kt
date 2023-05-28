@@ -70,15 +70,20 @@ fun UpdateUserScreen(
             phone = data.phone,
             address = data.address,
             email = data.email,
-            password = data.password
+            password = data.password,
+            isActive = data.isActive,
+            rol = data.rol
         )
      }
     if(dataUser!=null) {
-        Box(modifier = Modifier.fillMaxSize().background(Color(200,230,230))) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .background(Color(200, 230, 230))) {
             Column {
 
                 TopAppBar(
-                    backgroundColor = Color(2, 101, 157)
+                    backgroundColor = Color(2, 101, 157),
+
                 ) {
                     IconButton(onClick = {
                         isDrawerOpe.value = true
@@ -89,6 +94,7 @@ fun UpdateUserScreen(
                             contentDescription = null,
                             modifier = Modifier.size(20.dp)
                         )
+
                     }
                 }
                 Card(
@@ -96,7 +102,7 @@ fun UpdateUserScreen(
                     ),
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(10.dp),
+                        .padding(40.dp),
                     backgroundColor = Color.White,
 
                     ) {
@@ -124,16 +130,10 @@ fun UpdateUserScreen(
                             cursorColor = Color.Black,
                             textColor = Color.Black,
                         )
-                        val modifierText = Modifier.padding(2.dp)
+                        val modifierText = Modifier
+                            .padding(2.dp)
+                            .size(width = 200.dp, height = 60.dp)
                         val color = Color.Black
-                        Text(
-                            text = "Actualizar informacion",
-                            color = Color.Black,
-                            fontFamily = FontFamily.SansSerif,
-                            fontSize = 20.sp
-                        )
-                        Spacer(modifier = Modifier.padding(10.dp))
-
 
                         TextFieldOwn(
                             valueData = firstName,
