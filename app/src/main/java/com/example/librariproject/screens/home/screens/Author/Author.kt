@@ -25,6 +25,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -76,18 +78,27 @@ fun ListItemView(author: GetAllAuthorQuery.GetAllAuthor, navController: NavHostC
 
     Card(
         backgroundColor = Color.White,
-        shape = RoundedCornerShape(10.dp),
         elevation = Dp(2F),
-        modifier = Modifier.padding(all = 16.dp)
+        modifier = Modifier.padding( 10.dp)
     ) {
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .drawBehind {
+                drawLine(
+                    color = Color(6,91,57),
+                    start = Offset(0f,0f),
+                    end = Offset(0f,size.height),
+                    strokeWidth = 20f
+                )
+            }
+        ) {
         Row(modifier = Modifier
-            .fillMaxWidth()
             .padding(all = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier.weight(1f).padding(10.dp)) {
                 Text(
-                    text = author.id.toString(),
+                    text = author.id.toInt().toString(),
                     textAlign = TextAlign.Start,
                 )
                 Text(
@@ -100,11 +111,20 @@ fun ListItemView(author: GetAllAuthorQuery.GetAllAuthor, navController: NavHostC
                 )
             }
             IconButton(onClick = { /*TODO*/ }) {
-                Icon(imageVector = FontAwesomeIcons.Solid.Edit, contentDescription = null, modifier = Modifier.size(20.dp))
+                Icon(
+                    imageVector = FontAwesomeIcons.Solid.Edit,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
             }
             IconButton(onClick = { /*TODO*/ }) {
-               Icon(imageVector = FontAwesomeIcons.Solid.Trash, contentDescription = null, modifier = Modifier.size(20.dp))
+                Icon(
+                    imageVector = FontAwesomeIcons.Solid.Trash,
+                    contentDescription = null,
+                    modifier = Modifier.size(20.dp)
+                )
             }
+        }
         }
     }
 }
