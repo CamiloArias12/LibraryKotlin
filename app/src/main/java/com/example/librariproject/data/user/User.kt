@@ -42,7 +42,7 @@ class UserData {
                 email=email, password = password))).execute()
         return response.data?.userUpdate
     }
-    suspend fun  upateUserAdmin(id: Int, isActive:Boolean, rol :Boolean): UpdateAdminMutation.UserAdmin? {
+    suspend fun  updateUserAdmin(id: Int, isActive:Boolean, rol :Boolean): UpdateAdminMutation.UserAdmin? {
         val response :ApolloResponse<UpdateAdminMutation.Data> = apolloClient.mutation(UpdateAdminMutation(
             UserUpdateAdmin(id = id.toDouble(), isActive = isActive,rol=rol))).execute()
         return response.data?.userAdmin
