@@ -1,6 +1,5 @@
 package com.example.librariproject.screens.mainscreen
 
-import android.util.Log
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -40,7 +39,7 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.material.TextFieldDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -49,7 +48,6 @@ import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import com.example.librariproject.R
 import com.example.librariproject.UserLoginMutation
 import com.example.librariproject.data.user.UserData
-import com.example.librariproject.data.user.UserStore
 import com.example.librariproject.routes.AuthScreen
 import com.example.librariproject.screens.components.AlertWindow
 import com.example.library.routes.Graph
@@ -93,10 +91,12 @@ fun LoginScreen(navController: NavHostController){
                         val password = remember { mutableStateOf(TextFieldValue()) }
                         val showDialog = remember { mutableStateOf(false) }
                         val scope = rememberCoroutineScope( )
-
+                        val message= remember {
+                            mutableStateOf("")
+                        }
 
                         OutlinedTextField(
-                            label = { Text(text = "Email", color = Color.White) },
+                            label = { Text(text = "Correo", color = Color.White) },
                             value = email.value,
                             onValueChange = { email.value = it },
 
@@ -119,7 +119,7 @@ fun LoginScreen(navController: NavHostController){
 
                         )
                         OutlinedTextField(
-                            label = { Text(text = "Password", color = Color.White) },
+                            label = { Text(text = "Contrasena", color = Color.White) },
                             value = password.value,
                             onValueChange = { password.value = it },
                             leadingIcon = {
@@ -151,9 +151,14 @@ fun LoginScreen(navController: NavHostController){
                                     val  user= UserData()
                                     val data : UserLoginMutation.UserValidate?= user.loginUser(email =email.value.text, password = password.value.text)
                                     if (data!=null){
-
-                                        navController.navigate(Graph.HOME+ "/${data.id.toInt()}")
+                                        if (data.isActive)
+                                            navController.navigate(Graph.HOME+ "/${data.id.toInt()}")
+                                        else {
+                                            message.value = "Usuario inactivo"
+                                            showDialog.value = true
+                                        }
                                     }else{
+                                        message.value = "Usuario o contrasena incorrectos"
                                         showDialog.value=true
                                     }
                                 }
@@ -168,7 +173,7 @@ fun LoginScreen(navController: NavHostController){
                             Text(text = "Iniciar sesion")
                         }
                         if (showDialog.value) {
-                            AlertWindow(showDialog = showDialog, text = "Correo u contrasena incorrectos")
+                            AlertWindow(showDialog = showDialog, text = message.value)
                         }
                 ClickableText(
                     text = AnnotatedString("Registrarse"),

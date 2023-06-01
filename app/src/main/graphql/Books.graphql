@@ -7,3 +7,23 @@ query GetAllBook {
         summary
     }
 }
+
+mutation BookCreate($authors: [Int!]!, $create: BookInput!) {
+    bookCreate(authors: $authors, create: $create) {
+        id
+    }
+}
+query GetBook($idBook: Float!) {
+    getBook(idBook: $idBook) {
+        id
+        title
+        publisher
+        area
+        summary
+    }
+}
+
+
+query deleteBook($idBook: Float!) {
+    deleteBook(idBook: $idBook)
+}

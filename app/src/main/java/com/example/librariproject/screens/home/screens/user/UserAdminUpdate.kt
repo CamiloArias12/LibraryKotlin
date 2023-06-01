@@ -1,7 +1,9 @@
 package com.example.librariproject.screens.home.screens.user
 
 import android.util.Log
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -32,16 +34,19 @@ import androidx.navigation.compose.rememberNavController
 import com.example.librariproject.GetUserQuery
 import com.example.librariproject.data.user.UserData
 import com.example.librariproject.data.user.UserValue
+import com.example.librariproject.screens.components.BarTop
+import com.example.librariproject.screens.components.BoxItem
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AdminUpdate(id: Int, navController: NavHostController) {
+fun AdminUpdate(id: Int, navController: NavHostController ,isDrawerOpe:MutableState<Boolean>) {
+
     var dataUser by remember { mutableStateOf<UserValue?>(null) }
     val user = UserData()
-    val scope= rememberCoroutineScope()
+    val scope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-
+        isDrawerOpe.value=false
         val data: GetUserQuery.Users? = user.getUser(id = id)
         dataUser = UserValue(
             id = data?.id?.toInt()!!,
@@ -52,112 +57,80 @@ fun AdminUpdate(id: Int, navController: NavHostController) {
             email = data.email,
             password = data.password,
             isActive = data.isActive,
-            rol =  data.rol
+            rol = data.rol
 
         )
     }
-    if(dataUser!=null) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
-            modifier = Modifier.fillMaxSize()
+    if (dataUser != null) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color(200, 230, 230))
         ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+            ) {
+                BarTop(
+                    navController = navController,
+                    isDrawerOpe = isDrawerOpe,
+                    title = "Informacion Personal"
+                )
 
-            val listActive = listOf("Activo", "Inactivo")
-            val rolAdSt = listOf("Administrador", "Estudiante")
+                val listActive = listOf("Activo", "Inactivo")
+                val rolAdSt = listOf("Administrador", "Estudiante")
 
-            val isActive = remember {
-                mutableStateOf("")
-            }
-            val rol = remember {
-                mutableStateOf("")
-            }
-
-            if (dataUser!!.isActive){
-                isActive.value=listActive[0]
-            }else{
-                isActive.value=listActive[1]
-            }
-            if (dataUser!!.rol){
-                rol.value=rolAdSt[0]
-            }else{
-                rol.value=rolAdSt[1]
-            }
-
-            Text(text = "Estado")
-            BoxItem(option = isActive, items = listActive)
-
-            Text(text = "Rol")
-            BoxItem(option = rol, items = rolAdSt)
-
-            Button(
-                onClick = {
-                    dataUser!!.isActive = isActive.value==listActive[0]
-                    dataUser!!.rol = rol.value==rolAdSt[0]
-                    scope.launch {
-                        user.updateUserAdmin(
-                            id = dataUser!!.id,
-                            isActive = dataUser!!.isActive,
-                            rol = dataUser!!.rol
-                        )
-                    }
-                    Log.d("ROl",dataUser.toString())
-
-                },
-                colors = ButtonDefaults.buttonColors(
-                    contentColor = Color.White,
-                    backgroundColor = Color.Black
-                ),
-                modifier = Modifier
-                    .padding(10.dp),
-
-                ) {
-                Text(text = "Actualizar")
-            }
-        }
-    }
-
-}
-
-@OptIn(ExperimentalMaterialApi::class)
-@Composable
-fun BoxItem(option:MutableState<String>, items:List<String>){
-    var expanded by remember {
-        mutableStateOf(false)
-    }
-    ExposedDropdownMenuBox(expanded = expanded, onExpandedChange ={expanded =it} ) {
-        TextField(
-            value = option.value,
-            onValueChange ={},
-            readOnly = true,
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            singleLine = false,
-            modifier = Modifier.size(width = 170.dp, height = 50.dp)
-
-            )
-        ExposedDropdownMenu(
-            expanded =expanded ,
-            onDismissRequest = { expanded=false })
-        {
-            items.forEach{ item ->
-                DropdownMenuItem(onClick = {
-                    option.value = item
-                    expanded=false
-                }) {
-                    Text(text = item)
+                val isActive = remember {
+                    mutableStateOf("")
                 }
-                
+                val rol = remember {
+                    mutableStateOf("")
+                }
+
+                if (dataUser!!.isActive) {
+                    isActive.value = listActive[0]
+                } else {
+                    isActive.value = listActive[1]
+                }
+                if (dataUser!!.rol) {
+                    rol.value = rolAdSt[0]
+                } else {
+                    rol.value = rolAdSt[1]
+                }
+
+                Text(text = "Estado")
+                BoxItem(option = isActive, items = listActive)
+
+                Text(text = "Rol")
+                BoxItem(option = rol, items = rolAdSt)
+
+                Button(
+                    onClick = {
+                        dataUser!!.isActive = isActive.value == listActive[0]
+                        dataUser!!.rol = rol.value == rolAdSt[0]
+                        scope.launch {
+                            user.updateUserAdmin(
+                                id = dataUser!!.id,
+                                isActive = dataUser!!.isActive,
+                                rol = dataUser!!.rol
+                            )
+                        }
+                        Log.d("ROl", dataUser.toString())
+
+                    },
+                    colors = ButtonDefaults.buttonColors(
+                        contentColor = Color.White,
+                        backgroundColor = Color.Black
+                    ),
+                    modifier = Modifier
+                        .padding(10.dp),
+
+                    ) {
+                    Text(text = "Actualizar")
+                }
             }
         }
+
     }
 }
 
-
-@Preview(showBackground = true)
-@Composable
-fun Preview(){
-    AdminUpdate(123, navController= rememberNavController())
-}

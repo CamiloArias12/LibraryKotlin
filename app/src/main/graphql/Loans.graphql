@@ -1,0 +1,45 @@
+query GetAllLoan {
+    getAllLoan {
+        id
+        startDate
+        returnDate
+        returned
+    }
+}
+query DeleteLoan($loanId: Float!) {
+    loanDelete(loanId: $loanId)
+}
+query Loan($loanId: Float!) {
+    loan(loanId: $loanId) {
+        id
+        returnDate
+        startDate
+        returned
+    }
+}
+mutation LoanUpdate($update: LoanInputUpdate!) {
+    loanUpdate(update: $update) {
+        id
+        startDate
+        returnDate
+        returned
+    }
+}
+
+mutation LoanCreate($create: LoanInput!) {
+    loanCreate(create: $create) {
+        id
+        startDate
+        returnDate
+        returned
+    }
+}
+
+query GetAllLoanUser($getAllLoanUserId: Float!) {
+    getAllLoanUser(id: $getAllLoanUserId) {
+        id
+        startDate
+        returnDate
+        returned
+    }
+}

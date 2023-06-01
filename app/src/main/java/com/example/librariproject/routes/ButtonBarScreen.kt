@@ -13,14 +13,15 @@ import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.brands.Facebook
 import compose.icons.fontawesomeicons.brands.Java
 import compose.icons.fontawesomeicons.solid.BookOpen
+import compose.icons.fontawesomeicons.solid.Store
 import compose.icons.fontawesomeicons.solid.UserAlt
 import compose.icons.fontawesomeicons.solid.UserFriends
 import compose.icons.fontawesomeicons.solid.Users
 
 sealed class ButtonBarScreen (
-            val route: String,
-            val title:String,
-            val icon: ImageVector
+    var route: String,
+    val title:String,
+    val icon: ImageVector
         ){
 
 
@@ -33,12 +34,22 @@ sealed class ButtonBarScreen (
         object Loan: ButtonBarScreen(
             route = "loan",
             title = "Prestamos",
-            icon = FontAwesomeIcons.Brands.Facebook
+            icon = FontAwesomeIcons.Solid.Store
         )
+        object LoanStudent: ButtonBarScreen(
+        route = "loanStudent",
+        title = "Prestamos",
+        icon = FontAwesomeIcons.Solid.Store
+    )
         object User: ButtonBarScreen(
             route = "user",
             title = "Usuraios",
             icon = FontAwesomeIcons.Solid.UserAlt
+        )
+        object BookStudent: ButtonBarScreen(
+        route = "BookStudent",
+        title = "Libros",
+        icon = FontAwesomeIcons.Solid.BookOpen
         )
         object Author: ButtonBarScreen(
             route = "author",

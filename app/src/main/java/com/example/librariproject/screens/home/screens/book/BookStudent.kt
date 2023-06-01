@@ -1,11 +1,9 @@
-package com.example.librariproject.screens.home.screens.user
+package com.example.librariproject.screens.home.screens.book
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,12 +11,9 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,61 +26,55 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.apollographql.apollo3.api.ApolloResponse
-import com.example.librariproject.GetUserAllQuery
-import com.example.librariproject.R
+import com.example.librariproject.GetAllBookQuery
 import com.example.librariproject.apollo.apolloClient
-import com.example.librariproject.routes.UserCrud
+import com.example.librariproject.routes.BookCrud
 import compose.icons.FontAwesomeIcons
 import compose.icons.fontawesomeicons.Solid
 import compose.icons.fontawesomeicons.solid.Edit
-
+import compose.icons.fontawesomeicons.solid.Trash
 
 @Composable
-fun UsersLibrary(navController: NavHostController) {
+fun BooksLibraryStudent(navController: NavHostController) {
 
     Box(
-       modifier= Modifier
-           .fillMaxSize()
-           .background(Color(240, 240, 240))
+        modifier= Modifier.fillMaxSize()
+            .background(Color(240,240,240))
     ) {
 
-        var response: ApolloResponse<GetUserAllQuery.Data>? by remember {
+        var response: ApolloResponse<GetAllBookQuery.Data>? by remember {
             mutableStateOf(null)
         }
-        var listUser by remember { mutableStateOf(emptyList<GetUserAllQuery.UsersAll>())
+        var listUser by remember {
+            mutableStateOf(emptyList<GetAllBookQuery.GetAllBook>())
         }
         LaunchedEffect(Unit) {
-            response = apolloClient.query(GetUserAllQuery()).execute()
-            listUser = listUser + response?.data?.usersAll.orEmpty()
+            response = apolloClient.query(GetAllBookQuery()).execute()
+            listUser = listUser + response?.data?.getAllBook.orEmpty()
 
         }
 
         LazyColumn() {
             items(listUser) { launch ->
-                ListItemView(user = launch, navController = navController)
+                ListItemViewStudent(book = launch, navController = navController)
             }
 
         }
     }
 }
 
-
 @Composable
-fun ListItemView(user: GetUserAllQuery.UsersAll, navController: NavHostController) : Unit {
+fun ListItemViewStudent(book: GetAllBookQuery.GetAllBook, navController: NavHostController) : Unit {
 
     Card(
         backgroundColor = Color.White,
-        elevation = Dp(2F),
         shape = RoundedCornerShape(10.dp),
+        elevation = Dp(2F),
         modifier = Modifier.padding(all = 16.dp)
     ) {
         Box(modifier = Modifier
@@ -107,39 +96,20 @@ fun ListItemView(user: GetUserAllQuery.UsersAll, navController: NavHostControlle
             ) {
                 Column(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = user.firstName,
+                        text = book.id.toString(),
                         textAlign = TextAlign.Start,
                     )
                     Text(
-                        text = user.email,
+                        text = book.title,
                         textAlign = TextAlign.Start,
                     )
                     Text(
-                        text = user.phone,
+                        text = book.area,
                         textAlign = TextAlign.Start,
-                    )
-                    Text(
-                        text = user.address,
-                        textAlign = TextAlign.Start,
-                    )
-                }
-                IconButton(onClick = {
-                    navController.navigate(UserCrud.UpdateAdmin.route + "/${user.id.toInt()}")
-                }) {
-                    Icon(
-                        imageVector = FontAwesomeIcons.Solid.Edit,
-                        contentDescription = null,
-                        modifier = Modifier.size(20.dp)
                     )
                 }
             }
         }
+
     }
-}
-
-
-@Preview(showBackground = true)
-@Composable
-fun PrevieUser(){
-    UsersLibrary(navController = rememberNavController())
 }

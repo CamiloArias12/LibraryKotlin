@@ -20,6 +20,7 @@ mutation UserCreate($create: UserInput!) {
 mutation UserLogin($validationUser: UserLoginInput!) {
     userValidate(validationUser: $validationUser) {
         id
+        isActive
     }
 }
 

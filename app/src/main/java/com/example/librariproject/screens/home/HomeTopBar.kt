@@ -56,7 +56,9 @@ import com.example.librariproject.GetUserQuery
 import com.example.librariproject.R
 import com.example.librariproject.data.user.UserData
 import com.example.librariproject.data.user.UserValue
+import com.example.librariproject.routes.AuthScreen
 import com.example.librariproject.routes.UserCrud
+import com.example.librariproject.routes.authNavGraph
 import com.example.library.routes.ButtonBarScreen
 import com.example.library.routes.Graph
 import compose.icons.FontAwesomeIcons
@@ -104,7 +106,9 @@ fun Drawer(
             phone = data.phone,
             address = data.address,
             email = data.email,
-            password = data.password
+            password = data.password,
+            isActive = data.isActive,
+            rol = data.rol
         )
         Log.d("Data", dataUser.toString())
     }
@@ -118,7 +122,7 @@ fun Drawer(
         ) {
 
             IconButton(onClick = {
-
+                navController.navigate(Graph.ROOT)
             }) {
                 Icon(painter = painterResource(id = R.drawable.logout) , contentDescription = null, modifier = Modifier.size(40.dp))
             }

@@ -5,3 +5,27 @@ query GetAllAuthor {
         nationality
     }
 }
+
+mutation AuthorUpdate($update: AuthorInput!) {
+    authorUpdate(update: $update) {
+        id
+    }
+}
+query GetAuthor($authorId: Float!) {
+    author(authorId: $authorId) {
+        id
+        name
+        nationality
+        biography
+    }
+}
+
+mutation AuthorCreate($create: AuthorInput!) {
+    authorCreate(create: $create) {
+        id
+
+    }
+}
+query AuthorDelete($authorId: Float!) {
+    authorDelete(authorId: $authorId)
+}

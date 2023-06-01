@@ -64,7 +64,7 @@ fun SingIn (navController: NavHostController){
                 verticalArrangement = Arrangement.Center
 
             ) {
-                var showDialog =remember { mutableStateOf(false) }
+                val showDialog =remember { mutableStateOf(false) }
 
                 val identification = remember { mutableStateOf(TextFieldValue()) }
                 val firstName = remember { mutableStateOf(TextFieldValue()) }

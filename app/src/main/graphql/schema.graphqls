@@ -7,9 +7,21 @@ type Query {
 
   author(authorId: Float!): Author!
 
+  authorDelete(authorId: Float!): Boolean!
+
+  getBook(idBook: Float!): Book!
+
+  deleteBook(idBook: Float!): Boolean!
+
   getAllBook: [Book!]!
 
-  loan(authorId: Float!): Loan!
+  getAllLoan: [Loan!]!
+
+  getAllLoanUser(id: Float!): [Loan!]!
+
+  loan(loanId: Float!): Loan!
+
+  loanDelete(loanId: Float!): Boolean!
 }
 
 type User {
@@ -53,6 +65,8 @@ type Author {
   name: String!
 
   nationality: String!
+
+  biography: String!
 }
 
 type Book {
@@ -93,9 +107,13 @@ type Mutation {
 
   authorCreate(create: AuthorInput!): Author!
 
+  authorUpdate(update: AuthorInput!): Author!
+
   bookCreate(authors: [Int!]!, create: BookInput!): Book
 
-  loanCreate(bookId: Float!, userId: Float!, create: LoanInput!): Loan!
+  loanCreate(create: LoanInput!): Loan!
+
+  loanUpdate(update: LoanInputUpdate!): Loan!
 }
 
 input UserInput {
@@ -129,11 +147,13 @@ input UserLoginInput {
 }
 
 input AuthorInput {
-  id: Float
+  id: Float!
 
-  name: String
+  name: String!
 
-  nationality: String
+  nationality: String!
+
+  biography: String!
 }
 
 """
@@ -142,7 +162,7 @@ The `Int` scalar type represents non-fractional signed whole numeric values. Int
 scalar Int
 
 input BookInput {
-  id: Float!
+  id: Float
 
   title: String!
 
@@ -154,15 +174,23 @@ input BookInput {
 }
 
 input LoanInput {
-  id: Float!
-
   startDate: DateTime!
 
   returnDate: DateTime!
 
+  userId: Float!
+
+  bookId: Float!
+}
+
+input LoanInputUpdate {
+  id: Float!
+
   returned: Boolean!
 
-  userId: Float!
+  startDate: DateTime!
+
+  returnDate: DateTime!
 
   bookId: Float!
 }
